@@ -11,7 +11,7 @@ amqp_config = {'exchangeName': 'e.message.created',
                }
 
 writer = Publisher(amqp_config)
-for x in range(0,100):
+for x in range(0,1000):
     some_dict = {'message': 'Test Message',
                  'value': x,
                  }

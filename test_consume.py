@@ -1,5 +1,6 @@
 from consumer import Consumer
 from functools import partial
+import traceback
 import json
 
 # If you do not use partial when passing the callback function
@@ -14,7 +15,7 @@ exchange_options = {'passive': False,  # Perform a declare or just check to see 
 
 queue_options = {'passive': False,  # Perform a declare or just check to see if it exists
                  'durable': True,  # Survive a reboot of RabbitMQ
-                 'autoDelete': True,  # Remove when no more queues are bound to it
+                 'autoDelete': False,  # Remove when no more queues are bound to it
                  'exclusive': False,  # Queue can be shared across connections
                  }
 
@@ -39,8 +40,10 @@ def callback(body):
             parsed_json = json.loads(new_body)
             for item in parsed_json:
                 print(parsed_json[item])
-        except:
-            print(new_body)
+        except Exception as e:
+            print(repr(e))
+            traceback.print_exc() # WHAT DOES THIS DO ?
+            raise e
 
 
 reader = Consumer(amqp_config)
